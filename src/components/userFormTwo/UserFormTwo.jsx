@@ -7,7 +7,7 @@ const UserFormTwo = props => {
           <input
               type='text'
               name='job'
-              value={}
+            
 
           />
     </div>

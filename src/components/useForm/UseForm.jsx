@@ -1,70 +1,106 @@
-import React, {useState } from 'react'
-import PropTypes from 'prop-types'
-import { BsArrowRightCircleFill } from "react-icons/bs";
-import { Bs1CircleFill } from "react-icons/bs";
-import { Bs2CircleFill } from "react-icons/bs";
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import './useForm.style.css';
 
-
-
-
-import "./useForm.style.css"
-
-const defaultData = {
-  id: "",
-  name: "",
-  salary: "",
-  email: "",
-  phone: "",
-  maritalStatus: "",
-};
-
-const UseForm = ({addUserHandler}) => {
-  const [userData, setUserData] = useState(defaultData);
+const UseForm = ({ addUserHandler }) => {
+  const [formData, setFormData] = useState({
+    id: '',
+    name: '',
+    phone: '',
+    email: '',
+    salary: '',
+    maritalStatus: '',
+  });
+  const [isUserFormOpen, setIsUserFormOpen] = useState(false);
+  const [currentStep, setCurrentStep] = useState(1);
 
   const onInputChange = (e) => {
-    setUserData({ ...userData, [e.target.name]: e.target.value })
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const onSubmitHandler = (e) => {
-    e.preventDefault()
-    addUserHandler(userData)
+    e.preventDefault();
+
+    if (currentStep === 1) {
+      setCurrentStep(2);
+    } else {
+      addUserHandler(formData);
+
+      setFormData({
+        id: '',
+        name: '',
+        phone: '',
+        email: '',
+        salary: '',
+        maritalStatus: '',
+      });
+      setIsUserFormOpen(false);
+      setCurrentStep(1);
+    }
   };
 
   return (
     <div>
-      <button><Bs1CircleFill /></button>
-      <button><Bs2CircleFill /></button>
-      <form onSubmit={onSubmitHandler}>
-        <input
-          type='text'
-          name='name'
-          value={userData.name}
-          onChange={onInputChange }
-          placeholder='Name'
-        />
-        <input
-          type='tel'
-          name='phone'
-          value={userData.phone}
-          onChange={ onInputChange }
-          placeholder='Phone'
-        />
-        <input
-          type='email'
-          name='email'
-          value={userData.email}
-          onChange={ onInputChange }
-          placeholder='Email'
-        />
-        <button type='submit'>
-          <BsArrowRightCircleFill />
-        </button>
+      <button onClick={() => setIsUserFormOpen(true)}>Add User</button>
 
-      </form>
+      {isUserFormOpen && (
+        <form onSubmit={onSubmitHandler}>
+          {currentStep === 1 ? (
+            <div>
+              <input
+                type="text"
+                placeholder="Name"
+                value={formData.name}
+                onChange={onInputChange}
+                name="name"
+                required
+              />
+              <input
+                type="tel"
+                placeholder="Phone"
+                value={formData.phone}
+                onChange={onInputChange}
+                name="phone"
+                required
+              />
+              <input
+                type="email"
+                placeholder="Email"
+                value={formData.email}
+                onChange={onInputChange}
+                name="email"
+                required
+              />
+            </div>
+          ) : (
+            <div>
+              <input
+                type="text"
+                placeholder="Salary"
+                value={formData.salary}
+                onChange={onInputChange}
+                name="salary"
+              />
+              <label htmlFor="maritalStatus">Marital Status:</label>
+                <select
+                  id="maritalStatus"
+                  name="maritalStatus"
+                  value={formData.maritalStatus}
+                  onChange={onInputChange}
+                >
+                  <option value="">Select Marital Status</option>
+                  <option value="married">Married</option>
+                  <option value="single">Single</option>
+                </select>
+            </div>
+          )}
+          <button type="submit">{currentStep === 1 ? 'Next' : 'Submit'}</button>
+        </form>
+      )}
     </div>
-  )
-}
+  );
+};
 
-UseForm.propTypes = {}
+UseForm.propTypes = {};
 
-export default UseForm
+export default UseForm;

@@ -1,10 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { FaRegTrashAlt } from "react-icons/fa";
-import "./useRow.style.css"
+import "./userRow.style.css"
 
-const UseRow = ({ user, onDeleteHandler }) => {
-  const {id,name,salary,meritalStatus,phone,email,website} = user
+const UserRow = ({ user, onDeleteHandler }) => {
+  const {id,name,salary,meritalStatus,phone,email} = user
   return (
     <tr>
       <td>{ id}</td>
@@ -13,12 +13,14 @@ const UseRow = ({ user, onDeleteHandler }) => {
       <td>{ email}</td>
       <td>{ salary}</td>
       <td>{meritalStatus}</td>
-      <td> <button onClick={()=> onDeleteHandler(id)}><FaRegTrashAlt /></button> </td>
+      <td>
+        <button onClick={() => onDeleteHandler(id)}><FaRegTrashAlt /></button> 
+       </td>
       
     </tr>
   )
 }
 
-UseRow.propTypes = {}
+UserRow.propTypes = {}
 
-export default UseRow
+export default UserRow
